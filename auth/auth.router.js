@@ -4,6 +4,7 @@ const userSchema = require("../validations/user.validation");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/user.model");
+const isAuth = require("../middlewares/isAuth");
 require("dotenv").config();
 
 const authRouter = Router();
@@ -49,6 +50,11 @@ authRouter.post("/sign-in", async (req, res) => {
     expiresIn: "1h",
   });
   res.json({ accessToken });
+});
+
+authRouter.get("/current-user", isAuth, async (req, res) => {
+  const user = await userModel.findById(req.userId);
+  res.json(user);
 });
 
 module.exports = authRouter;

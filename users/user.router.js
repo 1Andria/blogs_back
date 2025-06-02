@@ -39,7 +39,7 @@ userRouter.get("/:id", async (req, res) => {
   if (!isValidObjectId(id)) {
     return res.status(400).json({ error: "Wrong ID is provided" });
   }
-  const user = await userModel.findById(id);
+  const user = await userModel.findById(id).populate("blogs");
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
