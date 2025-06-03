@@ -46,6 +46,9 @@ blogRouter.delete("/:id", isAuth, async (req, res) => {
   }
 
   const deletedBlog = await blogModel.findByIdAndDelete(id);
+  await userModel.findByIdAndUpdate(blog.author._id, {
+    $pull: { blogs: id },
+  });
   res.json({ message: "Blog deleted successfully", data: deletedBlog });
 });
 
